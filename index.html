@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>식사 메뉴 추천 프로그램</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.5;
+      color: #333;
+      background-color: #fff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .py-8 {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+
+    .mb-8 {
+      margin-bottom: 2rem;
+    }
+
+    .mb-12 {
+      margin-bottom: 3rem;
+    }
+
+    .mr-2 {
+      margin-right: 0.5rem;
+    }
+
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .flex-col {
+      flex-direction: column;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-center {
+      justify-content: center;
+    }
+
+    .justify-between {
+      justify-between: space-between;
+    }
+
+    .gap-2 {
+      gap: 0.5rem;
+    }
+
+    .gap-4 {
+      gap: 1rem;
+    }
+
+    .gap-6 {
+      gap: 1.5rem;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .max-w-sm {
+      max-width: 24rem;
+    }
+
+    .max-w-md {
+      max-width: 28rem;
+    }
+
+    .max-w-2xl {
+      max-width: 42rem;
+    }
+
+    .max-w-3xl {
+      max-width: 48rem;
+    }
+
+    .h-full {
+      height: 100%;
+    }
+
+    .h-48 {
+      height: 12rem;
+    }
+
+    .h-32 {
+      height: 8rem;
+    }
+
+    .h-64 {
+      height: 16rem;
+    }
+
+    .h-4 {
+      height: 1rem;
+    }
+
+    .h-5 {
+      height: 1.25rem;
+    }
+
+    .h-6 {
+      height: 1.5rem;
+    }
+
+    .h-8 {
+      height: 2rem;
+    }
+
+    .w-4 {
+      width: 1rem;
+    }
+
+    .w-5 {
+      width: 1.25rem;
+    }
+
+    .w-6 {
+      width: 1.5rem;
+    }
+
+    .w-8 {
+      width: 2rem;
+    }
+
+    /* Typography */
+    .text-center {
+      text-align: center;
+    }
+
+    .text-sm {
+      font-size: 0.875rem;
+    }
+
+    .text-lg {
+      font-size: 1.125rem;
+    }
+
+    .text-xl {
+      font-size: 1.25rem;
+    }
+
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+
+    .text-3xl {
+      font-size: 1.875rem;
+    }
+
+    .font-bold {
+      font-weight: 700;
+    }
+
+    .font-semibold {
+      font-weight: 600;
+    }
+
+    .text-muted-foreground {
+      color: #6c757d;
+    }
+
+    /* Components */
+    .header {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0.75rem 0;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: bold;
+      font-size: 1.125rem;
+    }
+
+    .search-form {
+      display: flex;
+      width: 100%;
+      max-width: 24rem;
+      gap: 0.5rem;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    .search-button {
+      padding: 0.5rem;
+      background-color: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 0.25rem;
+      cursor: pointer;
+    }
+
+    .search-button:hover {
+      background-color: #e5e7eb;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header {
+      padding: 1.25rem 1.25rem 0.5rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-description {
+      color: #6c757d;
+      font-size: 0.875rem;
+    }
+
+    .card-content {
+      padding: 0.5rem 1.25rem;
+      flex-grow: 1;
+    }
+
+    .card-footer {
+      padding: 1.25rem;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .button-primary {
+      background-color: #3b82f6;
+      color: white;
+      border: 1px solid #3b82f6;
+    }
+
+    .button-primary:hover {
+      background-color: #2563eb;
+      border-color: #2563eb;
+    }
+
+    .button-outline {
+      background-color: transparent;
+      color: #3b82f6;
+      border: 1px solid #3b82f6;
+    }
+
+    .button-outline:hover {
+      background-color: #eff6ff;
+    }
+
+    .button-ghost {
+      background-color: transparent;
+      color: #6b7280;
+      border: 1px solid transparent;
+    }
+
+    .button-ghost:hover {
+      background-color: #f3f4f6;
+    }
+
+    .button-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    .button-icon {
+      padding: 0.5rem;
+    }
+
+    .button-full {
+      width: 100%;
+    }
+
+    .image-container {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      overflow: hidden;
+    }
+
+    .image-container img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bg-muted {
+      background-color: #f3f4f6;
+    }
+
+    .rounded-md {
+      border-radius: 0.375rem;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    /* Select component */
+    .select-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .select {
+      width: 100%;
+      padding: 0.5rem 2rem 0.5rem 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.25rem;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+      background-size: 1.5em 1.5em;
+    }
+
+    /* Views */
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    /* Food detail */
+    .food-detail {
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+
+    /* Random meal generator */
+    .random-meal-container {
+      margin-bottom: 2rem;
+    }
+
+    /* Loading indicator */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+    }
+
+    .loading::after {
+      content: "";
+      width: 32px;
+      height: 32px;
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .search-form {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header/Navbar -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="#" class="logo" onclick="showView('home')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L9.7 4.3a.6.6 0 0 0-.7.5L6.6 16a.6.6 0 0 0 .5.7L16 18.4a.6.6 0 0 0 .7-.5L19.4 7a.6.6 0 0 0-.5-.7"></path>
+            <path d="M19 10h-5a2 2 0 0 1-2-2V3"></path>
+          </svg>
+          <span>식사 메뉴 추천</span>
+        </a>
+
+        <form class="search-form" onsubmit="handleSearch(event)">
+          <input type="text" id="search-input" class="search-input" placeholder="음식 검색...">
+          <button type="submit" class="search-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span class="sr-only">검색</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Home View -->
+    <div id="home-view" class="view active">
+      <div class="container py-8 px-4">
+        <header class="mb-8 text-center">
+          <div class="flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+              <path d="M18 6L9.7 4.3a.6.6 0 0 0-.7.5L6.6 16a.6.6 0 0 0 .5.7L16 18.4a.6.6 0 0 0 .7-.5L19.4 7a.6.6 0 0 0-.5-.7"></path>
+              <path d="M19 10h-5a2 2 0 0 1-2-2V3"></path>
+            </svg>
+            <h1 class="text-3xl font-bold">식사 메뉴 추천 프로그램</h1>
+          </div>
+          <p class="text-muted-foreground max-w-2xl mx-auto">
+            다양한 카테고리의 음식을 탐색하고 새로운 메뉴를 발견하세요. 각 음식에 대한 간단한 설명도 제공됩니다.
+          </p>
+        </header>
+
+        <!-- Random Meal Generator -->
+        <div class="random-meal-container">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                  <path d="M2 12h2"></path>
+                  <path d="M6 12h2"></path>
+                  <path d="M10 12h2"></path>
+                  <path d="M18 12h2"></path>
+                  <path d="M14 12h2"></path>
+                  <path d="M6 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                  <path d="M18 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                  <path d="M14 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                  <path d="M6 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                  <path d="M16 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                  <path d="M8 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                </svg>
+                랜덤 메뉴 추천
+              </div>
+              <div class="card-description">오늘 뭐 먹을지 고민된다면? 랜덤으로 메뉴를 추천해 드립니다.</div>
+            </div>
+            <div class="card-content">
+              <div class="flex flex-col gap-4">
+                <div class="flex gap-4 items-center">
+                  <div class="select-container">
+                    <select id="category-select" class="select">
+                      <option value="all">모든 카테고리</option>
+                      <!-- Categories will be populated by JavaScript -->
+                    </select>
+                  </div>
+                  <button onclick="generateRandomMeals()" class="button button-primary">추천 받기</button>
+                </div>
+
+                <div id="random-meals" class="grid">
+                  <!-- Random meals will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categories Section -->
+        <section class="mb-12">
+          <h2 class="text-2xl font-semibold mb-6 text-center">카테고리 선택</h2>
+          <div id="categories-grid" class="grid">
+            <!-- Categories will be populated by JavaScript -->
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Category View -->
+    <div id="category-view" class="view">
+      <div class="container py-8 px-4">
+        <button onclick="showView('home')" class="button button-ghost mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+          홈으로 돌아가기
+        </button>
+
+        <header class="mb-8">
+          <h1 id="category-title" class="text-3xl font-bold mb-2"></h1>
+          <p id="category-description" class="text-muted-foreground"></p>
+        </header>
+
+        <div id="category-foods" class="grid">
+          <!-- Foods in category will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Food Detail View -->
+    <div id="food-detail-view" class="view">
+      <div class="container py-8 px-4">
+        <button id="back-to-category" class="button button-ghost mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+          <span id="back-to-category-text">카테고리 목록으로 돌아가기</span>
+        </button>
+
+        <div class="card food-detail">
+          <div class="card-header">
+            <div class="flex items-center gap-2 mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6L9.7 4.3a.6.6 0 0 0-.7.5L6.6 16a.6.6 0 0 0 .5.7L16 18.4a.6.6 0 0 0 .7-.5L19.4 7a.6.6 0 0 0-.5-.7"></path>
+                <path d="M19 10h-5a2 2 0 0 1-2-2V3"></path>
+              </svg>
+              <div id="food-title" class="card-title text-2xl"></div>
+            </div>
+            <div id="food-category" class="card-description"></div>
+          </div>
+          <div class="card-content">
+            <div class="mb-6">
+              <div class="image-container mb-4">
+                <img id="food-image" src="/placeholder.svg" alt="">
+              </div>
+
+              <h2 class="text-xl font-semibold mb-2">설명</h2>
+              <p id="food-description" class="text-muted-foreground"></p>
+            </div>
+
+            <div class="flex justify-between">
+              <button onclick="showView('home')" class="button button-outline">홈으로 돌아가기</button>
+              <button id="more-foods-button" class="button button-primary">더 많은 음식 보기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Results View -->
+    <div id="search-view" class="view">
+      <div class="container py-8 px-4">
+        <button onclick="showView('home')" class="button button-ghost mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+          홈으로 돌아가기
+        </button>
+
+        <header class="mb-8">
+          <h1 class="text-3xl font-bold mb-4 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            검색 결과
+          </h1>
+
+          <div class="mb-4">
+            <form class="search-form" onsubmit="handleSearch(event)">
+              <input type="text" id="search-page-input" class="search-input" placeholder="음식 검색...">
+              <button type="submit" class="search-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <span class="sr-only">검색</span>
+              </button>
+            </form>
+          </div>
+
+          <p id="search-results-info" class="text-muted-foreground"></p>
+        </header>
+
+        <div id="search-results" class="grid">
+          <!-- Search results will be populated by JavaScript -->
+        </div>
+
+        <div id="no-results" class="text-center py-12" style="display: none;">
+          <p class="text-xl mb-4">검색 결과가 없습니다.</p>
+          <p class="text-muted-foreground mb-6">다른 검색어로 시도해보세요.</p>
+          <button onclick="showView('home')" class="button button-primary">모든 카테고리 보기</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Data
+    const foodCategories = [
+      {
+        id: "korean",
+        name: "한식 (Korean)",
+        description: "Traditional Korean cuisine known for fermented foods, rice dishes, and flavorful stews.",
+        imageUrl: "https://images.unsplash.com/photo-1590301157890-4810ed352733?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        id: "chinese",
+        name: "중식 (Chinese)",
+        description: "Diverse Chinese cuisine featuring stir-fries, noodles, dumplings, and bold flavors.",
+        imageUrl: "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=2729&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        id: "japanese",
+        name: "일식 (Japanese)",
+        description: "Japanese cuisine emphasizing fresh ingredients, seafood, rice, and precise preparation.",
+        imageUrl: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        id: "western",
+        name: "양식 (Western)",
+        description: "Western cuisine including pasta, steaks, burgers, sandwiches, and various European dishes.",
+        imageUrl: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=2938&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        id: "mexican",
+        name: "멕시칸 (Mexican)",
+        description: "Vibrant Mexican cuisine with corn, beans, chili peppers, and diverse street foods.",
+        imageUrl: "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        id: "asian",
+        name: "아시아 (Asian)",
+        description: "Diverse Asian cuisines including Indian, Thai, Vietnamese, and other Southeast Asian dishes.",
+        imageUrl: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        id: "dessert",
+        name: "디저트 (Dessert)",
+        description: "Sweet treats from around the world, including cakes, pastries, and traditional desserts.",
+        imageUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=2864&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        id: "beverage",
+        name: "음료 (Beverage)",
+        description: "Various drinks including coffee, tea, alcoholic beverages, and traditional Korean drinks.",
+        imageUrl: "https://images.unsplash.com/photo-1544145945-f90425340c7e?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+    ];
+
+    // Food items data (shortened for brevity - in a real application, you would include all items)
+    const foodItems = [
+      // Korean Food
+      {
+        name: "떡볶이 (Tteokbokki)",
+        description: "Spicy rice cakes cooked in a sweet and spicy gochujang sauce, often with fish cakes and boiled eggs.",
+        category: "korean",
+        imageUrl: "https://images.unsplash.com/photo-1635063605586-5eb8d4482a1f?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        name: "김치찌개 (Kimchi Jjigae)",
+        description: "Spicy stew made with fermented kimchi, pork, tofu, and other ingredients, simmered until the flavors meld together.",
+        category: "korean",
+        imageUrl: "https://images.unsplash.com/photo-1627476455993-52b12eeabd8c?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        name: "된장찌개 (Doenjang Jjigae)",
+        description: "Savory soybean paste stew with tofu, vegetables, and sometimes seafood or meat.",
+        category: "korean",
+        imageUrl: "https://images.unsplash.com/photo-1583592643761-bf2ecd0e6f84?q=80&w=2864&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        name: "비빔밥 (Bibimbap)",
+        description: "Mixed rice bowl topped with vegetables, meat, egg, and gochujang sauce, often served in a hot stone bowl.",
+        category: "korean",
+        imageUrl: "https://images.unsplash.com/photo-1590301157890-4810ed352733?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      // Chinese Food
+      {
+        name: "짜장면 (Jajangmyeon)",
+        description: "Korean-Chinese noodles topped with a thick sauce made from black bean paste, diced pork, and vegetables.",
+        category: "chinese",
+        imageUrl: "https://images.unsplash.com/photo-1625862692743-3a3f2c8c0e2a?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        name: "짬뽕 (Jjamppong)",
+        description: "Spicy seafood noodle soup with various vegetables and seafood in a red pepper broth.",
+        category: "chinese",
+        imageUrl: "https://images.unsplash.com/photo-1557872943-16a5ac26437e?q=80&w=2881&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      // Japanese Food
+      {
+        name: "초밥 (Sushi)",
+        description: "Vinegared rice topped with various ingredients, often raw fish, served with soy sauce and wasabi.",
+        category: "japanese",
+        imageUrl: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        name: "라멘 (Ramen)",
+        description: "Japanese noodle soup with various broths (miso, shoyu, tonkotsu), toppings, and wheat noodles.",
+        category: "japanese",
+        imageUrl: "https://images.unsplash.com/photo-1557872943-16a5ac26437e?q=80&w=2881&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      // Western Food
+      {
+        name: "스테이크 (Steak)",
+        description: "Grilled beef steak, often served with vegetables and potatoes, seasoned with salt and pepper.",
+        category: "western",
+        imageUrl: "https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      {
+        name: "까르보나라 파스타 (Carbonara)",
+        description: "Italian pasta dish with eggs, cheese, pancetta or bacon, and black pepper.",
+        category: "western",
+        imageUrl: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      // Mexican Food
+      {
+        name: "타코 (Taco)",
+        description: "Mexican dish with a folded or rolled tortilla filled with various ingredients like meat, beans, cheese, and salsa.",
+        category: "mexican",
+        imageUrl: "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      // Asian Food
+      {
+        name: "팟타이 (Pad Thai)",
+        description: "Thai stir-fried rice noodles with eggs, tofu or meat, bean sprouts, peanuts, and lime.",
+        category: "asian",
+        imageUrl: "https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      // Dessert
+      {
+        name: "티라미수 (Tiramisu)",
+        description: "Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream, dusted with cocoa.",
+        category: "dessert",
+        imageUrl: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3",
+      },
+      // Beverage
+      {
+        name: "흑당 버블티 (Brown Sugar Bubble Tea)",
+        description: "Milk tea with brown sugar syrup and tapioca pearls, creating a tiger stripe pattern.",
+        category: "beverage",
+        imageUrl: "https://images.unsplash.com/photo-1558857563-b371033873b8?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3",
+      }
+    ];
+
+    // State management
+    let currentView = 'home';
+    let currentCategory = null;
+    let currentFood = null;
+    let currentSearchQuery = '';
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      populateCategories();
+      populateCategorySelect();
+      generateRandomMeals();
+    });
+
+    // View management
+    function showView(viewName, params = {}) {
+      // Hide all views
+      document.querySelectorAll('.view').forEach(view => {
+        view.classList.remove('active');
+      });
+
+      // Show the requested view
+      document.getElementById(`${viewName}-view`).classList.add('active');
+      currentView = viewName;
+
+      // Handle view-specific logic
+      switch(viewName) {
+        case 'category':
+          showCategoryView(params.categoryId);
+          break;
+        case 'food-detail':
+          showFoodDetailView(params.foodName);
+          break;
+        case 'search':
+          showSearchView(params.query);
+          break;
+      }
+
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+
+    // Populate categories on the home page
+    function populateCategories() {
+      const categoriesGrid = document.getElementById('categories-grid');
+      categoriesGrid.innerHTML = '';
+
+      foodCategories.forEach(category => {
+        const categoryCard = document.createElement('div');
+        categoryCard.className = 'card';
+        categoryCard.innerHTML = `
+          <div class="card-header">
+            <div class="card-title">${category.name}</div>
+            <div class="card-description">${category.description}</div>
+          </div>
+          <div class="card-content">
+            <div class="image-container">
+              <img src="${category.imageUrl || `/placeholder.svg?height=128&width=256&text=${encodeURIComponent(category.name)}`}" alt="${category.name}">
+            </div>
+          </div>
+          <div class="card-footer">
+            <button onclick="showView('category', {categoryId: '${category.id}'})" class="button button-primary button-full">이 카테고리 탐색하기</button>
+          </div>
+        `;
+        categoriesGrid.appendChild(categoryCard);
+      });
+    }
+
+    // Populate category select dropdown
+    function populateCategorySelect() {
+      const categorySelect = document.getElementById('category-select');
+      
+      foodCategories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
+      });
+    }
+
+    // Generate random meals
+    function generateRandomMeals() {
+      const randomMealsContainer = document.getElementById('random-meals');
+      randomMealsContainer.innerHTML = '<div class="loading"></div>';
+
+      const categorySelect = document.getElementById('category-select');
+      const selectedCategory = categorySelect.value;
+
+      // Simulate loading
+      setTimeout(() => {
+        randomMealsContainer.innerHTML = '';
+        
+        let filteredItems = foodItems;
+        if (selectedCategory !== 'all') {
+          filteredItems = foodItems.filter(item => item.category === selectedCategory);
+        }
+
+        // Get 3 random items
+        const shuffled = [...filteredItems].sort(() => 0.5 - Math.random());
+        const randomItems = shuffled.slice(0, 3);
+
+        randomItems.forEach(food => {
+          const foodCard = createFoodCard(food);
+          randomMealsContainer.appendChild(foodCard);
+        });
+      }, 500);
+    }
+
+    // Create a food card element
+    function createFoodCard(food, showCategory = true) {
+      const category = getCategoryById(food.category);
+      
+      const foodCard = document.createElement('div');
+      foodCard.className = 'card';
+      foodCard.innerHTML = `
+        <div class="image-container">
+          <img src="${food.imageUrl || `/placeholder.svg?height=192&width=384&text=${encodeURIComponent(food.name)}`}" alt="${food.name}">
+        </div>
+        <div class="card-header">
+          <div class="card-title">${food.name}</div>
+          ${showCategory && category ? `<div class="card-description">${category.name}</div>` : ''}
+        </div>
+        <div class="card-content">
+          <p class="text-sm text-muted-foreground">${food.description}</p>
+        </div>
+        <div class="card-footer">
+          <button onclick="showView('food-detail', {foodName: '${encodeURIComponent(food.name)}'})" class="button button-outline button-full">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 16v-4"></path>
+              <path d="M12 8h.01"></path>
+            </svg>
+            자세히 보기
+          </button>
+        </div>
+      `;
+      return foodCard;
+    }
+
+    // Show category view
+    function showCategoryView(categoryId) {
+      currentCategory = categoryId;
+      const category = getCategoryById(categoryId);
+      
+      if (!category) {
+        showView('home');
+        return;
+      }
+
+      document.getElementById('category-title').textContent = category.name;
+      document.getElementById('category-description').textContent = category.description;
+
+      const categoryFoodsContainer = document.getElementById('category-foods');
+      categoryFoodsContainer.innerHTML = '<div class="loading"></div>';
+
+      // Simulate loading
+      setTimeout(() => {
+        categoryFoodsContainer.innerHTML = '';
+        
+        const foods = getFoodsByCategory(categoryId);
+        
+        foods.forEach(food => {
+          const foodCard = createFoodCard(food, false);
+          categoryFoodsContainer.appendChild(foodCard);
+        });
+      }, 300);
+    }
+
+    // Show food detail view
+    function showFoodDetailView(foodName) {
+      const decodedName = decodeURIComponent(foodName);
+      const food = getFoodByName(decodedName);
+      
+      if (!food) {
+        showView('home');
+        return;
+      }
+
+      currentFood = food;
+      const category = getCategoryById(food.category);
+
+      document.getElementById('food-title').textContent = food.name;
+      document.getElementById('food-category').textContent = category ? `카테고리: ${category.name}` : '';
+      document.getElementById('food-image').src = food.imageUrl || `/placeholder.svg?height=256&width=640&text=${encodeURIComponent(food.name)}`;
+      document.getElementById('food-image').alt = food.name;
+      document.getElementById('food-description').textContent = food.description;
+
+      // Set up back button
+      const backButton = document.getElementById('back-to-category');
+      const backButtonText = document.getElementById('back-to-category-text');
+      backButtonText.textContent = `${category ? category.name : '카테고리'} 목록으로 돌아가기`;
+      backButton.onclick = () => showView('category', {categoryId: food.category});
+
+      // Set up more foods button
+      const moreFoodsButton = document.getElementById('more-foods-button');
+      moreFoodsButton.textContent = `더 많은 ${category ? category.name : '음식'} 보기`;
+      moreFoodsButton.onclick = () => showView('category', {categoryId: food.category});
+    }
+
+    // Handle search
+    function handleSearch(event) {
+      event.preventDefault();
+      const searchInput = event.target.querySelector('input');
+      const query = searchInput.value.trim();
+      
+      if (query) {
+        showView('search', {query});
+        // Update the other search input as well
+        const otherInput = (searchInput.id === 'search-input') ? 
+          document.getElementById('search-page-input') : 
+          document.getElementById('search-input');
+        otherInput.value = query;
+      }
+    }
+
+    // Show search results
+    function showSearchView(query) {
+      currentSearchQuery = query;
+      
+      const searchResultsContainer = document.getElementById('search-results');
+      const noResultsContainer = document.getElementById('no-results');
+      const searchResultsInfo = document.getElementById('search-results-info');
+      
+      searchResultsContainer.innerHTML = '<div class="loading"></div>';
+      noResultsContainer.style.display = 'none';
+
+      // Simulate loading
+      setTimeout(() => {
+        const results = searchFoods(query);
+        
+        searchResultsInfo.textContent = `"${query}"에 대한 검색 결과: ${results.length}개의 음식을 찾았습니다.`;
+        
+        if (results.length > 0) {
+          searchResultsContainer.innerHTML = '';
+          
+          results.forEach(food => {
+            const foodCard = createFoodCard(food);
+            searchResultsContainer.appendChild(foodCard);
+          });
+          
+          noResultsContainer.style.display = 'none';
+        } else {
+          searchResultsContainer.innerHTML = '';
+          noResultsContainer.style.display = 'block';
+        }
+      }, 300);
+    }
+
+    // Helper functions
+    function getCategoryById(id) {
+      return foodCategories.find(category => category.id === id);
+    }
+
+    function getFoodsByCategory(category) {
+      return foodItems.filter(item => item.category === category);
+    }
+
+    function getFoodByName(name) {
+      return foodItems.find(item => item.name === name);
+    }
+
+    function searchFoods(query) {
+      const lowerQuery = query.toLowerCase();
+      return foodItems.filter(
+        item => item.name.toLowerCase().includes(lowerQuery) || 
+               item.description.toLowerCase().includes(lowerQuery)
+      );
+    }
+  </script>
+</body>
+</html>
